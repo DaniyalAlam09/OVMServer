@@ -8,7 +8,6 @@ exports.isAuthenticated = async (req, res, next) => {
     if (!token) {
       return res.status(401).send("please Login First");
     }
-
     let user = await jwt.verify(token, config.get("jwtPrivateKey")); //when we sign token we give it user values now decode that values
     req.user = await User.findById(user._id);
   } catch (err) {

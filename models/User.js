@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   lastName: String,
   email: {
     type: String,
-    required: [true, "Please Enter a Name"],
+    required: [true, "Please Enter a Email"],
     unique: [true, "Email already exists"],
   },
   image: {
@@ -18,6 +18,5 @@ const userSchema = mongoose.Schema({
     select: false, // not select on select query
   },
   role: String,
-  
 });
 module.exports = mongoose.model("User", userSchema);
