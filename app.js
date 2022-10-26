@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var userRouter = require("./routes/api/users");
 var shopOwnerRouter = require("./routes/api/shopOwners");
 var adminRouter = require("./routes/api/admins");
+var prooductRouter = require("./routes/api/products");
 
 var app = express();
 const cors = require("cors");
@@ -29,8 +30,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // path
 app.use("/", indexRouter);
 app.use("/users/", userRouter);
-app.use("/shopowners/", shopOwnerRouter);
-app.use("/admins/", adminRouter);
+app.use("/shopowners", shopOwnerRouter);
+app.use("/admins", adminRouter);
+app.use("/shops", prooductRouter);
 
 // catch 404 and forwa rd to error handler
 app.use(function (req, res, next) {

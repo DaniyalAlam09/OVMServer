@@ -17,6 +17,6 @@ const userSchema = mongoose.Schema({
     minLength: [6, "Password must be at least 6 characters"],
     select: false, // not select on select query
   },
-  role: String,
+  role: { type: String, default: "user" },
 });
 module.exports = mongoose.model("User", userSchema);

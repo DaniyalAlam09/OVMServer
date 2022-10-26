@@ -29,6 +29,7 @@ exports.login = async (req, res, next) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            role:'user'
           },
           config.get("jwtPrivateKey")
         );
@@ -88,6 +89,7 @@ exports.register = async (req, res, next) => {
         {
           _id: user._id,
           email: user.email,
+          role: "user",
         },
         config.get("jwtPrivateKey")
       );
@@ -156,7 +158,6 @@ exports.myProfile = async (req, res) => {
   try {
     // console.log(req);
     const user = await User.findById(req.user._id);
-    console.log(user);
     return res.status(200).json({
       user,
     });

@@ -57,6 +57,7 @@ exports.register = async (req, res, next) => {
         {
           _id: shopOwner._id,
           email: shopOwner.email,
+          role: "shopowner",
         },
         config.get("jwtPrivateKey")
       );

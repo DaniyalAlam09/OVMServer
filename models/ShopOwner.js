@@ -22,6 +22,12 @@ const shopOwnerSchema = mongoose.Schema({
   floor: { type: Number, required: [true, "Please Enter a floor number"] },
   phone: { type: Number, required: [true, "Please Enter a phone number"] },
   catagorey: String,
-  role: String,
+  role: { type: String, default: "shopowner" },
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 module.exports = mongoose.model("ShopOwner", shopOwnerSchema);
