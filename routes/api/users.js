@@ -17,8 +17,9 @@ router.post("/registration", register);
 router.get("/user", isAuthenticated, myProfile);
 router.get("/logout", logout);
 router.post("/forgot-password", forgetPassword);
-// router.get("/reset-password/:id/:token", resetPassword);
-router.get("/reset-password/:id/:token", form);
+router.get("/reset-password/:id/:token", resetPassword);
+router.post("/reset-password/:id/:token", resetPasswordSet);
+// router.get("/reset-password/:id/:token", form);
 // router.get("/userProfile", myProfile);
 
 // router.get("/form", form);

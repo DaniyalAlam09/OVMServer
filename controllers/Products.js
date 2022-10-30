@@ -15,7 +15,9 @@ exports.addProduct = async (req, res, next) => {
     const shopOwner = await ShopOwner.findById(req.user._id);
     shopOwner.products.push(newProduct._id);
     await shopOwner.save();
-    return res.status(201).json({ success: true, newProduct });
+    return res
+      .status(201)
+      .json({ success: true, newProduct, message: "success" });
   } catch (error) {
     res.status(500).json({
       message: error.message,

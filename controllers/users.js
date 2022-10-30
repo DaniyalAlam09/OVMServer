@@ -29,7 +29,7 @@ exports.login = async (req, res, next) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            role:'user'
+            role: "user",
           },
           config.get("jwtPrivateKey")
         );
@@ -41,6 +41,7 @@ exports.login = async (req, res, next) => {
           })
           .json({
             message: "success",
+            token,
             user,
           });
       }
@@ -56,6 +57,7 @@ exports.login = async (req, res, next) => {
 exports.register = async (req, res, next) => {
   try {
     let { email, password, firstName, lastName } = req.body;
+    console.log(firstName);
     let user = await User.findOne({ email });
 
     if (user) {
@@ -116,23 +118,18 @@ exports.register = async (req, res, next) => {
 // exports.userProfile = async (req, res) => {
 //   const { token } = req.body;
 //   try {
-//     const user = jwt.verify(token, JWT_SECRET);
+//     const user = jwt.verify(token, config.get("jwtPrivateKey"));
+//     console.log(user);
 
 //     const useremail = user.email;
-//     User
-//       .findOne({ email: useremail })
+//     User.findOne({ email: useremail })
 //       .then((data) => {
 //         res.send({ status: "ok", data: data });
 //       })
 //       .catch((error) => {
 //         res.send({ status: "error", data: error });
 //       });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
+//   } catch (error) {}
 // };
 
 exports.logout = async (req, res) => {
@@ -156,7 +153,6 @@ exports.logout = async (req, res) => {
 
 exports.myProfile = async (req, res) => {
   try {
-    // console.log(req);
     const user = await User.findById(req.user._id);
     return res.status(200).json({
       user,
@@ -203,64 +199,49 @@ exports.forgetPassword = async (req, res) => {
   } catch (error) {}
 };
 
-// exports.resetPassword = async (req, res) => {
-//   const { id, token } = req.params;
-//   console.log(req.params);
-//   const oldUser = await User.findOne({ _id: id });
-//   if (!oldUser) {
-//     return res.json({ status: "User Not Exists!!" });
-//   }
-//   const secret = config.get("jwtPrivateKey") + oldUser.password;
-//   try {
-//     const verify = jwt.verify(token, secret);
-//     return res.render("index", {
-//       email: verify.email,
-//       status: "Not Verified",
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.send("Not Verified");
-//   }
-//   res.send("done");
-// };
-
-// exports.resetPasswordSet = async (req, res) => {
-//   console.log("hello");
-//   const { id, token } = req.params;
-//   const { password } = req.body;
-
-//   const oldUser = await User.findOne({ _id: id });
-//   if (!oldUser) {
-//     return res.json({ status: "User Not Exists!!" });
-//   }
-//   const secret = config.get("jwtPrivateKey") + oldUser.password;
-//   try {
-//     const verify = jwt.verify(token, secret);
-//     const encryptedPassword = await bcrypt.hash(password, 10);
-//     await User.updateOne(
-//       {
-//         _id: id,
-//       },
-//       {
-//         $set: {
-//           password: encryptedPassword,
-//         },
-//       }
-//     );
-
-//     res.render("index", { email: verify.email, status: "verified" });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ status: "Something Went Wrong" });
-//   }
-// };
-
-exports.form = async (req, res) => {
+exports.resetPassword = async (req, res) => {
   const { id, token } = req.params;
-  console.log(id);
+  console.log(req.params);
+  const oldUser = await User.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
+  const secret = config.get("jwtPrivateKey") + oldUser.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    res.render("index", { email: verify.email, status: "Not Verified" });
+  } catch (error) {
+    console.log(error);
+    res.send("Not Verified");
+  }
+};
 
-  res.render("form", {
-    id,
-    token,
-  });
+exports.resetPasswordSet = async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  const oldUser = await User.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
+  const secret = config.get("jwtPrivateKey") + oldUser.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    await User.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: {
+          password: encryptedPassword,
+        },
+      }
+    );
+
+    res.render("index", { email: verify.email, status: "verified" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "Something Went Wrong" });
+  }
 };
