@@ -33,6 +33,7 @@ exports.login = async (req, res, next) => {
           },
           config.get("jwtPrivateKey")
         );
+        console.log(token);
         return res
           .status(200)
           .cookie("token", token, {

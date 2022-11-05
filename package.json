@@ -21,5 +21,6 @@
     "nodemailer": "^6.8.0",
     "path": "^0.12.7",
     "validator": "^13.7.0"
-  }
+  },
+  "proxy": "http://localhost:4000"
 }

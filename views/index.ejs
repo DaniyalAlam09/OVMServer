@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <title>Document</title>
   <script>
     var status = '<%- JSON.stringify(status) %>';
@@ -16,15 +19,34 @@
   </script>
 </head>
 
-<body>
-  <h1>
-    <%= email%>
-  </h1>
-  <form action="" method="post">
-    <input type="password" name="password" id="password" placeholder="password" /><br />
-    <br />
-    <input type="submit" value="submit" />
-  </form>
+<body class=" mt-5 bg-light text-dark">
+  <div class=" d-flex align-items-center justify-content-center">
+
+    <h1 class="text-info">Welcome to OVM</h1>
+
+  </div>
+  <div class=" d-flex align-items-center justify-content-center">
+
+    <h4>Reset your password here</h4>
+
+  </div>
+  <br>
+  <div class=" d-flex align-items-center justify-content-center">
+    <h5 class="text-secondary mb-2">
+      <%= email%>
+    </h5>
+    <br>
+  </div>
+  <div class="d-flex align-items-center justify-content-center">
+    <form action="" method="post">
+      <h6>
+        <label class="control-label ml-4">Enter New Password</label>
+      </h6>
+      <input type="password" name="password" id="password" class="form-control" /> <br>
+      <!-- <input type="submit" value="submit" /> -->
+      <button type="submit" class="btn btn-primary ml-5 " value="submit">Submit</button>
+    </form>
+  </div>
 </body>
 
 </html>

@@ -15,7 +15,13 @@ const productSchema = mongoose.Schema({
   product_brand: {
     type: String,
   },
+  product_stoke: {
+    type: Number,
+  },
   category: {
+    type: String,
+  },
+  product_sku: {
     type: String,
   },
   owner: {
