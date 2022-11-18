@@ -68,6 +68,7 @@ exports.register = async (req, res, next) => {
         .cookie("token", token, {
           expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
           httpOnly: true,
+          secure: false,
         })
         .json({
           shopOwner,
@@ -146,4 +147,13 @@ exports.viewProducts = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+exports.myProfile = async (req, res) => {
+  try {
+    const user = await ShopOwner.findById(req.user._id);
+    return res.status(200).json({
+      user,
+    });
+  } catch (err) {}
 };

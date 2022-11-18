@@ -13,6 +13,7 @@ exports.viewCustomers = async (req, res) => {
     });
   } catch (err) {}
 };
+
 exports.viewShopOwners = async (req, res) => {
   try {
     ShopOwner.find((err, doc) => {
@@ -22,14 +23,16 @@ exports.viewShopOwners = async (req, res) => {
   } catch (err) {}
 };
 
-exports.deleteCustomer = async (req, res, next) => {
-  User.findByIdAndRemove(req.id, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.status(200).json({
-        msg: data,
-      });
-    }
+exports.deleteCustomer = (req, res) => {
+  User.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
+    if (err) res.json(err);
+    else res.json("User Deleted Successfully");
+  });
+};
+
+exports.deleteShopOwner = (req, res) => {
+  User.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
+    if (err) res.json(err);
+    else res.json("User Deleted Successfully");
   });
 };

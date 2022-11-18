@@ -12,6 +12,7 @@ var adminRouter = require("./routes/api/admins");
 var prooductRouter = require("./routes/api/products");
 
 var app = express();
+app.use(cookieParser());
 const cors = require("cors");
 app.use(
   cors({
@@ -29,7 +30,6 @@ app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // path

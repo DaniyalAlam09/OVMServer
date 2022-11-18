@@ -6,6 +6,8 @@ const ShopOwner = require("../models/ShopOwner");
 exports.isAuthenticated = async (req, res, next) => {
   try {
     const { token } = req.cookies;
+    console.log(req.cookies);
+    console.log();
     if (!token) {
       return res.status(401).send("please Login First");
     }

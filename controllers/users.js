@@ -39,6 +39,7 @@ exports.login = async (req, res, next) => {
           .cookie("token", token, {
             expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
             httpOnly: true,
+            secure: false,
           })
           .json({
             message: "success",
@@ -115,23 +116,6 @@ exports.register = async (req, res, next) => {
     });
   }
 };
-
-// exports.userProfile = async (req, res) => {
-//   const { token } = req.body;
-//   try {
-//     const user = jwt.verify(token, config.get("jwtPrivateKey"));
-//     console.log(user);
-
-//     const useremail = user.email;
-//     User.findOne({ email: useremail })
-//       .then((data) => {
-//         res.send({ status: "ok", data: data });
-//       })
-//       .catch((error) => {
-//         res.send({ status: "error", data: error });
-//       });
-//   } catch (error) {}
-// };
 
 exports.logout = async (req, res) => {
   try {
