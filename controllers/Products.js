@@ -3,21 +3,21 @@ const ShopOwner = require("../models/ShopOwner");
 
 exports.addProduct = async (req, res, next) => {
   try {
-    const product = await new Product(req.body);
-    console.log(req.user._id);
-    if (req.file) {
-      console.log("filr");
-      let pro = await Product.findById(product._id);
-      pro.product_image = req.file.path;
-      await pro.save();
-    }
+    console.log(req.body);
 
+    let product = new Product(req.body);
+    if (req.file) product.image = req.file.filename;
+    // res.send(product);
+    await product.save();
+    //
+    const newProduct = await Product.create(product);
     const shopOwner = await ShopOwner.findById(req.user._id);
-    shopOwner.products.push(product._id);
+    shopOwner.products.push(newProduct._id);
     await shopOwner.save();
-    return res.status(201).json({ success: true, product, message: "success" });
+    return res
+      .status(201)
+      .json({ success: true, newProduct, message: "success" });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: error.message,
     });
@@ -91,4 +91,11 @@ exports.createReview = async (req, res, next) => {
     console.log("in cTXH");
     res.status(500).json({ success: false, message: error.message });
   }
+};
+
+exports.updateProduct = async (req, res, next) => {
+  await Product.findByIdAndUpdate(req.params.id, req.body);
+  const newproduct = await Product.findById(req.params.id);
+
+  return res.send(newproduct);
 };

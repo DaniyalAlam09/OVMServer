@@ -5,6 +5,7 @@ const {
   addProduct,
   getSigleProduct,
   createReview,
+  updateProduct,
 } = require("../../controllers/Products");
 const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
@@ -29,6 +30,7 @@ router.post(
   addProduct
 );
 router.get("/:id", getSigleProduct);
+router.put("/updateProduct/:id", updateProduct);
 router.post("/review/:id", isAuthenticated, createReview);
 
 module.exports = router;

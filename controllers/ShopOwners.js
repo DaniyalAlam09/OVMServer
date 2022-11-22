@@ -157,3 +157,32 @@ exports.myProfile = async (req, res) => {
     });
   } catch (err) {}
 };
+
+exports.getMyProducts = async (req, res, next) => {
+  try {
+    const user = await ShopOwner.findById(req.user._id);
+    const products = [];
+
+    for (let i = 0; i < user.products.length; i++) {
+      const product = await Products.findById(user.products[i]);
+      products.push(product);
+    }
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.deleteProduct = (req, res) => {
+  Products.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
+    if (err) res.json(err);
+    else res.json("Product Deleted Successfully");
+  });
+};
