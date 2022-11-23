@@ -1,5 +1,5 @@
 {
   "jwtPrivateKey": "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe",
-  "mongooseURL": "mongodb+srv://dannyalalam:sRob7w5bmBSf1Tfa@cluster0.iiordeo.mongodb.net/?retryWrites=true&w=majority",
+  "mongooseURL": "mongodb://localhost:27017/OVM",
   "port": "4000"
 }

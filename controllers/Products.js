@@ -57,7 +57,7 @@ exports.createReview = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Product Not Found" });
     }
-    if (product.owner.toString() === req.user._id.toString()) {
+    if (product.owner?.toString() === req.user._id.toString()) {
       return res.json({
         success: false,
         message: "You Can't Review your Own Product",

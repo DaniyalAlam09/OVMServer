@@ -165,6 +165,7 @@ exports.getMyProducts = async (req, res, next) => {
 
     for (let i = 0; i < user.products.length; i++) {
       const product = await Products.findById(user.products[i]);
+      // cosole.log(user.products[i]);
       products.push(product);
     }
 
@@ -185,4 +186,27 @@ exports.deleteProduct = (req, res) => {
     if (err) res.json(err);
     else res.json("Product Deleted Successfully");
   });
+};
+
+exports.getSigleShopOwner = async (req, res, next) => {
+  try {
+    const shopowner = await ShopOwner.findById(req.params.id);
+    if (!shopowner) {
+      return res.status(404).json({
+        message: "ShopOwner Not Found",
+      });
+    }
+    return res.status(200).send(shopowner);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+exports.updateProfile = async (req, res, next) => {
+  await ShopOwner.findByIdAndUpdate(req.params.id, req.body);
+  const newshopowner = await ShopOwner.findById(req.params.id);
+
+  return res.send(newshopowner);
 };
