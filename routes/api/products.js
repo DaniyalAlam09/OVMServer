@@ -11,16 +11,14 @@ const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images");
+  destination: (req, file, callBack) => {
+    callBack(null, "public/images/uploaded/products");
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + file.originalname;
-    cb(null, uniqueSuffix);
+  filename: (req, file, callBack) => {
+    callBack(null, `${Date.now() + file.originalname.split(" ").join("-")}`);
   },
 });
-
-let upload = multer({ storage: storage });
+let upload = multer({ storage });
 
 router.post(
   "/add-product",

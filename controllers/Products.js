@@ -6,7 +6,11 @@ exports.addProduct = async (req, res, next) => {
     console.log(req.body);
 
     let product = new Product(req.body);
-    if (req.file) product.image = req.file.filename;
+    if (req.file) {
+      console.log("file");
+      console.log(req.file.path);
+      product.product_image = req.file.path;
+    }
     // res.send(product);
     await product.save();
     //

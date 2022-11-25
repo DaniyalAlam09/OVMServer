@@ -17,6 +17,17 @@ const userSchema = mongoose.Schema({
     minLength: [6, "Password must be at least 6 characters"],
     select: false, // not select on select query
   },
+  address: {
+    type: String,
+  },
+  phoneNo: {
+    type: Number,
+    required: [true, "Please Enter a Phone No"],
+  },
+  profession: {
+    type: String,
+  },
+
   role: { type: String, default: "user" },
 });
 module.exports = mongoose.model("User", userSchema);

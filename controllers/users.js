@@ -58,7 +58,8 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   try {
-    let { email, password, firstName, lastName } = req.body;
+    let { email, password, firstName, lastName, address, phoneNo, profession } =
+      req.body;
     console.log(firstName);
     let user = await User.findOne({ email });
 
@@ -66,9 +67,9 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({
         message: "user Already exist",
       });
-    } else if (!email || !password) {
+    } else if (!email || !password || !phoneNo) {
       return res.status(400).json({
-        message: "All Feild must be filled",
+        message: "All required Feild must be filled",
       });
     } else if (!validator.isEmail(email)) {
       return res.status(400).json({
@@ -86,6 +87,9 @@ exports.register = async (req, res, next) => {
         password,
         firstName,
         lastName,
+        address,
+        phoneNo,
+        profession,
       });
       // user will automatacally login after registration
 

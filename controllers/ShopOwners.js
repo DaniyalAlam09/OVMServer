@@ -210,3 +210,26 @@ exports.updateProfile = async (req, res, next) => {
 
   return res.send(newshopowner);
 };
+
+exports.singleShopProducts = async (req, res, next) => {
+  try {
+    const user = await ShopOwner.findById(req.params.id);
+    const products = [];
+
+    for (let i = 0; i < user.products.length; i++) {
+      const product = await Products.findById(user.products[i]);
+      cosole.log(user.products[i]);
+      products.push(product);
+    }
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

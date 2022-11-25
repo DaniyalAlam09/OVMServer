@@ -10,6 +10,7 @@ var userRouter = require("./routes/api/users");
 var shopOwnerRouter = require("./routes/api/shopOwners");
 var adminRouter = require("./routes/api/admins");
 var prooductRouter = require("./routes/api/products");
+var OrderRouter = require("./routes/api/Order");
 var cartRouter = require("./routes/api/cart");
 
 var app = express();
@@ -40,6 +41,7 @@ app.use("/shopowners", shopOwnerRouter);
 app.use("/admins", adminRouter);
 app.use("/shops", prooductRouter);
 app.use("/product", cartRouter);
+app.use("/order", OrderRouter);
 
 // catch 404 and forwa rd to error handler
 app.use(function (req, res, next) {
