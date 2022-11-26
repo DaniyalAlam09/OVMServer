@@ -21,7 +21,7 @@ router.get("/viewproducts", viewProducts);
 router.get("/shopowner", isAuthenticated, isShopOwner, myProfile);
 router.get("/myproducts", isAuthenticated, isShopOwner, getMyProducts);
 router.get("/shopproducts", singleShopProducts);
-router.get("/deleteproduct/:id", deleteProduct);
+router.get("/deleteproduct/:id", isAuthenticated, isShopOwner, deleteProduct);
 
 router.get("/:id", getSigleShopOwner);
 router.put("/updateprofile/:id", isAuthenticated, isShopOwner, updateProfile);

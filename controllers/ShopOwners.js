@@ -181,16 +181,37 @@ exports.getMyProducts = async (req, res, next) => {
   }
 };
 
-exports.deleteProduct = (req, res) => {
-  Products.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
-    if (err) res.json(err);
-    else res.json("Product Deleted Successfully");
-  });
+exports.deleteProduct = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const product = await Products.findById(req.params.id);
+    if (!product) return res.status(404).send("produvt Not Found");
+
+    await product.remove();
+    // after removing the gig from gigs we have to delete gig from user's posts list
+    const user = await ShopOwner.findById(req.user._id);
+    const index = user.products.indexOf(req.params.id);
+    user.products.splice(index, 1);
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Product Delete Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 exports.getSigleShopOwner = async (req, res, next) => {
   try {
-    const shopowner = await ShopOwner.findById(req.params.id);
+    const shopowner = await ShopOwner.findById(req.params.id).populate(
+      "products"
+    );
     if (!shopowner) {
       return res.status(404).json({
         message: "ShopOwner Not Found",
@@ -205,8 +226,8 @@ exports.getSigleShopOwner = async (req, res, next) => {
 };
 
 exports.updateProfile = async (req, res, next) => {
-  await ShopOwner.findByIdAndUpdate(req.params.id, req.body);
-  const newshopowner = await ShopOwner.findById(req.params.id);
+  await ShopOwner.findByIdAndUpdate(req.user._id, req.body);
+  const newshopowner = await ShopOwner.findById(req.user._id);
 
   return res.send(newshopowner);
 };

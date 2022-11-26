@@ -149,6 +149,12 @@ exports.myProfile = async (req, res) => {
   } catch (err) {}
 };
 
+exports.updateProfile = async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user._id, req.body);
+  const newshopowner = await User.findById(req.user._id);
+  return res.send(newshopowner);
+};
+
 exports.forgetPassword = async (req, res) => {
   const { email } = req.body;
   try {

@@ -60,3 +60,6 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+// For Clustered
+// "mongooseURL": "mongodb+srv://dannyalalam:sRob7w5bmBSf1Tfa@cluster0.iiordeo.mongodb.net/?retryWrites=true&w=majority",

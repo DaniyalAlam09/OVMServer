@@ -8,7 +8,7 @@ const {
   forgetPassword,
   resetPassword,
   resetPasswordSet,
-  form,
+  updateProfile,
 } = require("../../controllers/users");
 const { isAuthenticated } = require("../../middlewares/auth");
 
@@ -19,9 +19,6 @@ router.get("/logout", logout);
 router.post("/forgot-password", forgetPassword);
 router.get("/reset-password/:id/:token", resetPassword);
 router.post("/reset-password/:id/:token", resetPasswordSet);
-// router.get("/reset-password/:id/:token", form);
-// router.get("/userProfile", myProfile);
-
-// router.get("/form", form);
+router.put("/updateprofile/:id", isAuthenticated, updateProfile);
 
 module.exports = router;

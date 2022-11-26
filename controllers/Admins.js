@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("config");
-// "mongooseURL": "mongodb+srv://dannyalalam:sRob7w5bmBSf1Tfa@cluster0.iiordeo.mongodb.net/?retryWrites=true&w=majority",
 const User = require("../models/User");
 const ShopOwner = require("../models/ShopOwner");
 
