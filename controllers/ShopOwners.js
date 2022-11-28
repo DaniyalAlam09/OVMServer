@@ -85,7 +85,6 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    console.log("ldsli");
     const { email, password } = req.body;
 
     const shopowner = await ShopOwner.findOne({ email: email }).select(
@@ -236,10 +235,10 @@ exports.singleShopProducts = async (req, res, next) => {
   try {
     const user = await ShopOwner.findById(req.params.id);
     const products = [];
- 
+
     for (let i = 0; i < user.products.length; i++) {
       const product = await Products.findById(user.products[i]);
-      cosole.log(user.products[i]);
+      console.log(user.products[i]);
       products.push(product);
     }
 

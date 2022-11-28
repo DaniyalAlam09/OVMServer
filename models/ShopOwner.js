@@ -18,9 +18,9 @@ const shopOwnerSchema = mongoose.Schema({
     select: false,
   },
   shopName: { type: String, required: [true, "Please Enter a shop Name"] },
-  shopNo: { type: Number, required: [true, "Please Enter a shop Numner"] },
+  shopNo: { type: String, required: [true, "Please Enter a shop Numner"] },
   floor: { type: Number, required: [true, "Please Enter a floor number"] },
-  phone: { type: Number, required: [true, "Please Enter a phone number"] },
+  phone: { type: Number },
   catagorey: String,
   role: { type: String, default: "shopowner" },
   products: [

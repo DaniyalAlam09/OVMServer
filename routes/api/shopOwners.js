@@ -20,7 +20,7 @@ router.post("/login", login);
 router.get("/viewproducts", viewProducts);
 router.get("/shopowner", isAuthenticated, isShopOwner, myProfile);
 router.get("/myproducts", isAuthenticated, isShopOwner, getMyProducts);
-router.get("/shopproducts", singleShopProducts);
+router.get("/shopproducts/:id", singleShopProducts);
 router.get("/deleteproduct/:id", isAuthenticated, isShopOwner, deleteProduct);
 
 router.get("/:id", getSigleShopOwner);
