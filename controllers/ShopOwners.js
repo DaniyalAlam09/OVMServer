@@ -236,7 +236,7 @@ exports.singleShopProducts = async (req, res, next) => {
   try {
     const user = await ShopOwner.findById(req.params.id);
     const products = [];
-
+ 
     for (let i = 0; i < user.products.length; i++) {
       const product = await Products.findById(user.products[i]);
       cosole.log(user.products[i]);

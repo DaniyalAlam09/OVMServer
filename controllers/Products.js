@@ -3,7 +3,12 @@ const ShopOwner = require("../models/ShopOwner");
 
 exports.addProduct = async (req, res, next) => {
   try {
-    console.log(req.body);
+    let { product_name, product_price } = req.body;
+    if (!product_name || !product_price) {
+      return res.status(400).json({
+        message: "All required Feild must be filled",
+      });
+    }
 
     let product = new Product(req.body);
     if (req.file) {
@@ -11,9 +16,9 @@ exports.addProduct = async (req, res, next) => {
       console.log(req.file.path);
       product.product_image = req.file.path;
     }
+
     // res.send(product);
     await product.save();
-    //
     const newProduct = await Product.create(product);
     const shopOwner = await ShopOwner.findById(req.user._id);
     shopOwner.products.push(newProduct._id);
