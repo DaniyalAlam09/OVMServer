@@ -12,6 +12,7 @@ var adminRouter = require("./routes/api/admins");
 var prooductRouter = require("./routes/api/products");
 var OrderRouter = require("./routes/api/Order");
 var cartRouter = require("./routes/api/cart");
+var categoryRouter = require("./routes/api/categories");
 
 var app = express();
 app.use(cookieParser());
@@ -32,8 +33,7 @@ app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
-
+app.use("/public", express.static(path.join(__dirname, "public")));
 // path
 app.use("/", indexRouter);
 app.use("/users/", userRouter);
@@ -42,6 +42,7 @@ app.use("/admins", adminRouter);
 app.use("/shops", prooductRouter);
 app.use("/product", cartRouter);
 app.use("/order", OrderRouter);
+app.use("/category", categoryRouter);
 
 // catch 404 and forwa rd to error handler
 app.use(function (req, res, next) {

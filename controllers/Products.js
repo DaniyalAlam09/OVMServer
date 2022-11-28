@@ -3,30 +3,34 @@ const ShopOwner = require("../models/ShopOwner");
 
 exports.addProduct = async (req, res, next) => {
   try {
-    let { product_name, product_price } = req.body;
-    if (!product_name || !product_price) {
+    if (!req.file) {
       return res.status(400).json({
-        message: "All required Feild must be filled",
+        success: false,
+        message: "Attach picture",
       });
     }
+    const newProductData = {
+      product_name: req.body.name,
+      product_description: req.body.description,
+      product_price: req.body.price,
+      product_brand: req.body.brand,
+      category: req.body.category,
+      product_color: req.body.color,
+      product_stoke: req.body.stoke,
+      product_sku: req.body.sku,
+      product_image: req.file.path,
+      owner: req.user._id,
+    };
 
-    let product = new Product(req.body);
-    if (req.file) {
-      console.log("file");
-      console.log(req.file.path);
-      product.product_image = req.file.path;
-    }
-
-    // res.send(product);
-    await product.save();
-    const newProduct = await Product.create(product);
+    const product = await Product.create(newProductData);
     const shopOwner = await ShopOwner.findById(req.user._id);
-    shopOwner.products.push(newProduct._id);
+    shopOwner.products.push(product._id);
     await shopOwner.save();
-    return res
-      .status(201)
-      .json({ success: true, newProduct, message: "success" });
+    return res.status(201).json({ success: true, product, message: "success" });
+    //
   } catch (error) {
+    console.log(error.messagr);
+    console.log(error);
     res.status(500).json({
       message: error.message,
     });
