@@ -13,9 +13,17 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email: email }).select("+password");
     // because select:false for password to select password we use select(+password)
 
-    if (!user) {
+    if (!email) {
       return res.status(400).json({
-        message: "user not exist",
+        message: "Please Enter Email",
+      });
+    } else if (!email || !password) {
+      return res.status(400).json({
+        message: "Please Enter Password",
+      });
+    } else if (!user) {
+      return res.status(400).json({
+        message: "User not exist",
       });
     } else {
       const validPassword = await bcrypt.compare(password, user.password);

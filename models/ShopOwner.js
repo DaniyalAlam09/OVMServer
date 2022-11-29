@@ -29,5 +29,6 @@ const shopOwnerSchema = mongoose.Schema({
       ref: "Product",
     },
   ],
+  shopImage: { type: String },
 });
 module.exports = mongoose.model("ShopOwner", shopOwnerSchema);

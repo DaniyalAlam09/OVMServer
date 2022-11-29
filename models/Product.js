@@ -20,15 +20,19 @@ const productSchema = mongoose.Schema({
   },
   product_stoke: {
     type: Number,
+    required: [true, "Must Enter Product Stoke"],
   },
   category: {
     type: String,
+    required: [true, "Must Enter Product Catagorey"],
   },
   product_image: {
     type: String,
+    required: [true, "Must Enter Product Image"],
   },
   product_sku: {
     type: String,
+    required: [true, "Must Enter Product SKU"],
   },
   reviews: [
     {

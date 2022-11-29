@@ -51,6 +51,7 @@ exports.register = async (req, res, next) => {
         phone,
         catagorey,
         image,
+        shopImage: "/public/images/uploaded/shops/Shop.png",
       });
       // shopOwner will automatacally login after registration
 
@@ -91,10 +92,17 @@ exports.login = async (req, res, next) => {
       "+password"
     );
     // because select:false for password to select password we use select(+password)
-
-    if (!shopowner) {
+    if (!email) {
       return res.status(400).json({
-        message: "shopowner not exist",
+        message: "Please Enter Email",
+      });
+    } else if (!email || !password) {
+      return res.status(400).json({
+        message: "Please Enter Password",
+      });
+    } else if (!shopowner) {
+      return res.status(400).json({
+        message: "Shopowner not exist",
       });
     } else {
       const validPassword = await bcrypt.compare(password, shopowner.password);

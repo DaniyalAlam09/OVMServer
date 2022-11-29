@@ -3,10 +3,32 @@ const ShopOwner = require("../models/ShopOwner");
 
 exports.addProduct = async (req, res, next) => {
   try {
+    const { price, name, sku, stoke, category } = req.body;
+    console.log(req.body);
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "Attach picture",
+        message: "Select Product Picture",
+      });
+    } else if (!name) {
+      return res.status(400).json({
+        message: "Please Enter Product Name",
+      });
+    } else if (!price) {
+      return res.status(400).json({
+        message: "Please Enter Product Price",
+      });
+    } else if (!sku) {
+      return res.status(400).json({
+        message: "Please Enter SKU",
+      });
+    } else if (!stoke) {
+      return res.status(400).json({
+        message: "Please Enter Product price",
+      });
+    } else if (!category) {
+      return res.status(400).json({
+        message: "Please Select Category",
       });
     }
     const newProductData = {
@@ -29,7 +51,7 @@ exports.addProduct = async (req, res, next) => {
     return res.status(201).json({ success: true, product, message: "success" });
     //
   } catch (error) {
-    console.log(error.messagr);
+    console.log(error.message);
     console.log(error);
     res.status(500).json({
       message: error.message,
