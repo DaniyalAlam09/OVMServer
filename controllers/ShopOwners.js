@@ -146,7 +146,7 @@ exports.viewProducts = async (req, res) => {
   try {
     Products.find((err, doc) => {
       if (err) return console.log(err);
-      res.json(doc);
+      res.json(doc.reverse());
     });
   } catch (error) {
     res.status(500).json({

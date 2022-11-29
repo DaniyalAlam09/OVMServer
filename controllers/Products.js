@@ -25,7 +25,7 @@ exports.addProduct = async (req, res, next) => {
       });
     } else if (!stoke) {
       return res.status(400).json({
-        message: "Please Enter Product price",
+        message: "Please Enter Product Stoke",
       });
     } else if (!category) {
       return res.status(400).json({

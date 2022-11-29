@@ -30,7 +30,7 @@ exports.deleteCustomer = (req, res) => {
 };
 
 exports.deleteShopOwner = (req, res) => {
-  User.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
+  ShopOwner.findByIdAndRemove({ _id: req.params.id }, function (err, user) {
     if (err) res.json(err);
     else res.json("User Deleted Successfully");
   });

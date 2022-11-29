@@ -7,6 +7,7 @@ const stripe = require("stripe")(config.get("StripeAPIKey"));
 
 module.exports.getCartProducts = async (req, res) => {
   const userId = req.user._id;
+  console.log(req.user._id);
   try {
     let cart = await Cart.findOne({ userId });
     if (cart && cart.items.length > 0) {
@@ -29,6 +30,10 @@ module.exports.addToCart = async (req, res) => {
     if (!item) {
       res.status(404).send("Item not found!");
     }
+    if (!userId) {
+      res.status(404).send("Please Login First");
+    }
+
     const price = item.product_price;
     const name = item.product_name;
 
@@ -65,11 +70,15 @@ module.exports.addToCart = async (req, res) => {
 
 module.exports.deleteFromCart = async (req, res) => {
   const userId = req.user._id;
-  const productId = req.params.itemId;
+  console.log("djh");
+  const productId = req.params.productId;
   try {
-    let cart = await Cart.findOne({ userId });
-    let itemIndex = cart.items.findIndex((p) => p.productId == productId);
+    let cart = await Cart.findOne({ userId: userId });
+    console.log(cart);
+    let itemIndex = cart.items.findIndex((p) => p.productId === productId);
+
     if (itemIndex > -1) {
+      console.log(itemIndex);
       let productItem = cart.items[itemIndex];
       cart.bill -= productItem.quantity * productItem.price;
       cart.items.splice(itemIndex, 1);
@@ -77,7 +86,7 @@ module.exports.deleteFromCart = async (req, res) => {
     cart = await cart.save();
     return res.status(201).send(cart);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     res.status(500).send("Something went wrong");
   }
 };

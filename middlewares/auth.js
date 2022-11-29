@@ -9,7 +9,7 @@ exports.isAuthenticated = async (req, res, next) => {
     console.log(req.cookies);
     console.log();
     if (!token) {
-      return res.status(401).send("please Login First");
+      return res.status(401).send("Please Login First");
     }
     let user = await jwt.verify(token, config.get("jwtPrivateKey"));
     if (user.role === "user") {
