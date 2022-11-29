@@ -6,6 +6,7 @@ const {
   getSigleProduct,
   createReview,
   updateProduct,
+  viewProducts,
 } = require("../../controllers/Products");
 const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
@@ -29,6 +30,7 @@ router.post(
   addProduct
 );
 router.get("/:id", getSigleProduct);
+router.get("/", viewProducts);
 router.put("/updateProduct/:id", updateProduct);
 router.post("/review/:id", isAuthenticated, createReview);
 
