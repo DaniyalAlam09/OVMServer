@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const ShopOwner = require("../models/ShopOwner");
+const Category = require("../models/Category");
 
 exports.addProduct = async (req, res, next) => {
   try {
@@ -167,8 +168,8 @@ exports.viewProducts = async (req, res) => {
       );
     }
     const products = await Product.find({
-      title: { $regex: search, $options: "i" },
-      price: priceRange,
+      product_name: { $regex: search, $options: "i" },
+      product_price: priceRange,
     })
       .where("category")
       .in([...categories])
