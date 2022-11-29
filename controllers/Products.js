@@ -4,7 +4,7 @@ const ShopOwner = require("../models/ShopOwner");
 exports.addProduct = async (req, res, next) => {
   try {
     const { price, name, sku, stoke, category } = req.body;
-    console.log(req.body);
+
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -133,4 +133,60 @@ exports.updateProduct = async (req, res, next) => {
   const newproduct = await Product.findById(req.params.id);
 
   return res.send(newproduct);
+};
+
+exports.viewProducts = async (req, res) => {
+  try {
+    const page = Number(req.query.page) - 1 || 0;
+    const limit = Number(req.query.limit) || 10;
+    const search = req.query.search || "";
+    let sort = req.query.sort || "price";
+    let category = req.query.category || "All";
+    let priceRange = { $gte: "0" };
+    const categoriesObj = await Category.find({});
+    let categories = [];
+    categoriesObj.map((cat) => {
+      categories.push(cat.name);
+    });
+    category === "All"
+      ? (category = [...categories])
+      : (categories = req.query.category.split(","));
+
+    req.query.sort ? (sort = req.query.sort.split(",")) : (sort = [sort]);
+
+    let sortBy = {};
+    if (sort[1]) {
+      sortBy[sort[0]] = sort[1];
+    } else {
+      sortBy[sort[0]] = "asc";
+    }
+    if (req.query.price) {
+      priceRange = JSON.stringify(req.query.price);
+      priceRange = JSON.parse(
+        priceRange.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`)
+      );
+    }
+    const products = await Product.find({
+      title: { $regex: search, $options: "i" },
+      price: priceRange,
+    })
+      .where("category")
+      .in([...categories])
+      .sort(sortBy)
+      .skip(page * limit)
+      .limit(limit)
+      .populate("owner");
+    const productCount = await Product.count();
+
+    return res.status(201).json({
+      success: true,
+      products,
+      total: productCount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
