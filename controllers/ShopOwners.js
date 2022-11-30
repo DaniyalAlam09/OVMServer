@@ -51,7 +51,7 @@ exports.register = async (req, res, next) => {
         phone,
         catagorey,
         image,
-        shopImage: "/public/images/uploaded/shops/Shop.png",
+        shopImage: "/public/images/uploaded/shops/Shop1.png",
       });
       // shopOwner will automatacally login after registration
 

@@ -5,17 +5,20 @@ const OrderSchema = mongoose.Schema({
   userId: {
     type: String,
   },
+  shopOwnerId: {
+    type: String,
+  },
   items: [
     {
       productId: {
         type: String,
       },
       name: String,
-      quantity: {
-        type: Number,
-        required: true,
-        min: [1, "Quantity can not be less then 1."],
-      },
+      // quantity: {
+      //   type: Number,
+      //   required: true,
+      //   min: [1, "Quantity can not be less then 1."],
+      // },
       price: Number,
     },
   ],
@@ -26,6 +29,10 @@ const OrderSchema = mongoose.Schema({
   date_added: {
     type: Date,
     default: Date.now,
+  },
+  status: {
+    type: String,
+    default: "pending",
   },
 });
 

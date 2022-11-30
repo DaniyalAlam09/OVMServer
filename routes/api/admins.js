@@ -9,7 +9,7 @@ const {
 
 router.get("/viewcustomers", viewCustomers);
 router.get("/viewshopowners", viewShopOwners);
-router.get("/deleteuser/:id", deleteCustomer);
+router.delete("/deleteuser/:id", deleteCustomer);
 router.get("/deleteshopowner/:id", deleteShopOwner);
 
 module.exports = router;
