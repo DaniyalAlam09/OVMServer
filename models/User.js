@@ -29,6 +29,7 @@ const userSchema = mongoose.Schema({
   },
 
   role: { type: String, default: "user" },
+  
   myOrders: [
     {
       type: mongoose.Schema.Types.ObjectId,

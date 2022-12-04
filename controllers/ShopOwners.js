@@ -4,7 +4,9 @@ const bcrypt = require("bcrypt");
 const config = require("config");
 const validator = require("validator");
 const Products = require("../models/Product");
-
+const Token = require("../models/Token");
+const sendEmail = require("../utils/sendEmail");
+const crypto = require("crypto");
 exports.register = async (req, res, next) => {
   try {
     let {
@@ -40,7 +42,7 @@ exports.register = async (req, res, next) => {
     } else {
       let salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
-      shopOwner = await ShopOwner.create({
+      let shopOwner = await ShopOwner.create({
         firstName,
         lastName,
         email,
@@ -54,10 +56,18 @@ exports.register = async (req, res, next) => {
         shopImage: "/public/images/uploaded/shops/Shop1.png",
       });
       // shopOwner will automatacally login after registration
+      const tokenverify = await new Token({
+        userId: shopOwner._id,
+        token: crypto.randomBytes(32).toString("hex"),
+      }).save();
+      const url = `${"http://localhost:3000/"}users/${shopOwner.id}/verify/${
+        tokenverify.token
+      }`;
+      await sendEmail(shopOwner.email, "Verify Email", url);
 
       const token = jwt.sign(
         {
-          _id: shopOwner._id,
+          // _id: shopOwner._id,
           email: shopOwner.email,
           role: "shopowner",
         },
@@ -74,13 +84,35 @@ exports.register = async (req, res, next) => {
         .json({
           shopOwner,
           token,
-          message: "success",
+          message: "An Email sent to your account please verify",
         });
     }
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
+  }
+};
+
+exports.verifyLink = async (req, res) => {
+  try {
+    const user = await ShopOwner.findOne({ _id: req.params.id });
+    if (!user) return res.status(400).send({ message: "Invalid link" });
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+    console.log(token);
+    if (!token) return res.status(400).send({ message: "Invalid link" });
+
+    await ShopOwner.updateOne({ _id: user._id, verified: true });
+    await token.remove();
+
+    res.status(200).send({ message: "Email verified successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+    console.log(error.message);
   }
 };
 

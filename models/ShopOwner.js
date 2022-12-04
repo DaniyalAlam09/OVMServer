@@ -23,6 +23,7 @@ const shopOwnerSchema = mongoose.Schema({
   phone: { type: Number },
   catagorey: String,
   role: { type: String, default: "shopowner" },
+  verified: { type: Boolean, default: false },
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
