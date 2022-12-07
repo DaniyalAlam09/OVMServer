@@ -13,6 +13,7 @@ var prooductRouter = require("./routes/api/products");
 var OrderRouter = require("./routes/api/Order");
 var cartRouter = require("./routes/api/cart");
 var categoryRouter = require("./routes/api/categories");
+var brandRouter = require("./routes/api/brand");
 
 var app = express();
 app.use(cookieParser());
@@ -43,6 +44,7 @@ app.use("/shops", prooductRouter);
 app.use("/product", cartRouter);
 app.use("/order", OrderRouter);
 app.use("/category", categoryRouter);
+app.use("/brand", brandRouter);
 
 // catch 404 and forwa rd to error handler
 app.use(function (req, res, next) {
