@@ -67,7 +67,7 @@ exports.getSigleProduct = async (req, res, next) => {
       return res.status(404).json({
         message: "Product Not Found",
       });
-    }
+    } 
     return res.status(200).send(product);
   } catch (error) {
     res.status(500).json({
