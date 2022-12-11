@@ -4,6 +4,7 @@ exports.createBrand = async (req, res, next) => {
   try {
     const newBrandData = {
       name: req.body.name,
+      imageUrl: req.body.imageUrl,
     };
     const newBrand = await Brand.create(newBrandData);
     return res.status(200).json({
