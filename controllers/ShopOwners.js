@@ -174,6 +174,93 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const oldUser = await ShopOwner.findOne({ email });
+    if (!oldUser) {
+      return res.json({ status: "User Not Exists!!" });
+    }
+    const secret = config.get("jwtPrivateKey") + oldUser.password;
+    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
+      expiresIn: "5m",
+    });
+
+    const link = `http://localhost:4000/shopowners/reset-password/${oldUser._id}/${token}`;
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "onlinevirtualmall09@gmail.com",
+        pass: "wlgkftaccqrmplxr",
+      },
+    });
+
+    var mailOptions = {
+      from: "youremail@gmail.com",
+      to: email,
+      subject: "Password Reset",
+      text: link,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        res.json({ status: `Email Sent to ${email} for reset Password` });
+      }
+    });
+    console.log(link);
+  } catch (error) {}
+};
+
+exports.resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  console.log(req.params);
+  const oldUser = await ShopOwner.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
+  const secret = config.get("jwtPrivateKey") + oldUser.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    res.render("index", { email: verify.email, status: "Not Verified" });
+  } catch (error) {
+    console.log(error);
+    res.send("Not Verified");
+  }
+};
+
+exports.resetPasswordSet = async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  const oldUser = await ShopOwner.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
+  const secret = config.get("jwtPrivateKey") + oldUser.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    await ShopOwner.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: {
+          password: encryptedPassword,
+        },
+      }
+    );
+
+    res.render("index", { email: verify.email, status: "verified" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "Something Went Wrong" });
+  }
+};
+
 exports.viewProducts = async (req, res) => {
   try {
     Products.find((err, doc) => {
