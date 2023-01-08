@@ -103,7 +103,6 @@ exports.verifyLink = async (req, res) => {
       userId: user._id,
       token: req.params.token,
     });
-    console.log(token);
     if (!token) return res.status(400).send({ message: "Invalid link" });
 
     await ShopOwner.updateOne({ _id: user._id, verified: true });
@@ -152,7 +151,6 @@ exports.login = async (req, res, next) => {
           },
           config.get("jwtPrivateKey")
         );
-        console.log(token);
         return res
           .status(200)
           .cookie("token", token, {
@@ -216,7 +214,6 @@ exports.forgetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   const { id, token } = req.params;
-  console.log(req.params);
   const oldUser = await ShopOwner.findOne({ _id: id });
   if (!oldUser) {
     return res.json({ status: "User Not Exists!!" });
@@ -309,7 +306,6 @@ exports.getMyProducts = async (req, res, next) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    console.log(req.params.id);
     const product = await Products.findById(req.params.id);
     if (!product) return res.status(404).send("produvt Not Found");
 
@@ -365,7 +361,7 @@ exports.singleShopProducts = async (req, res, next) => {
 
     for (let i = 0; i < user.products.length; i++) {
       const product = await Products.findById(user.products[i]);
-      console.log(user.products[i]);
+      // console.log(user.products[i]);
       products.push(product);
     }
 

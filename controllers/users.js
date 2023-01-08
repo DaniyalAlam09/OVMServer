@@ -41,7 +41,6 @@ exports.login = async (req, res, next) => {
           },
           config.get("jwtPrivateKey")
         );
-        console.log(token);
         return res
           .status(200)
           .cookie("token", token, {
@@ -68,7 +67,6 @@ exports.register = async (req, res, next) => {
   try {
     let { email, password, firstName, lastName, address, phoneNo, profession } =
       req.body;
-    console.log(firstName);
     let user = await User.findOne({ email });
 
     if (user) {
@@ -204,7 +202,6 @@ exports.forgetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   const { id, token } = req.params;
-  console.log(req.params);
   const oldUser = await User.findOne({ _id: id });
   if (!oldUser) {
     return res.json({ status: "User Not Exists!!" });

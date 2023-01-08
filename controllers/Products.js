@@ -53,7 +53,6 @@ exports.addProduct = async (req, res, next) => {
     //
   } catch (error) {
     console.log(error.message);
-    console.log(error);
     res.status(500).json({
       message: error.message,
     });
@@ -124,7 +123,6 @@ exports.createReview = async (req, res, next) => {
     await product.save();
     res.status(201).json({ success: true, message: "Review added" });
   } catch (error) {
-    console.log("in cTXH");
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -178,7 +176,7 @@ exports.viewProducts = async (req, res) => {
       .limit(limit)
       .populate("owner");
     const productCount = await Product.count();
-    console.log(productCount);
+    // console.log(productCount);
 
     return res.status(201).json({
       success: true,
