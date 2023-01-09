@@ -55,7 +55,7 @@ exports.register = async (req, res, next) => {
         image,
         shopImage: "/public/images/uploaded/shops/Shop1.png",
       });
-      // shopOwner will automatacally login after registration
+
       const tokenverify = await new Token({
         userId: shopOwner._id,
         token: crypto.randomBytes(32).toString("hex"),
@@ -105,7 +105,10 @@ exports.verifyLink = async (req, res) => {
     });
     if (!token) return res.status(400).send({ message: "Invalid link" });
 
-    await ShopOwner.updateOne({ _id: user._id, verified: true });
+    await ShopOwner.updateOne(
+      { email: user.email },
+      { $set: { verified: true } }
+    );
     await token.remove();
 
     res.status(200).send({ message: "Email verified successfully" });

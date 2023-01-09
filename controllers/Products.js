@@ -139,6 +139,7 @@ exports.viewProducts = async (req, res) => {
     const page = Number(req.query.page) - 1 || 0;
     const limit = Number(req.query.limit) || 10;
     const search = req.query.search || "";
+    const brand = req.query.brand || "";
     let sort = req.query.sort || "price";
     let category = req.query.category || "All";
     let priceRange = { $gte: "0" };
@@ -167,6 +168,7 @@ exports.viewProducts = async (req, res) => {
     }
     const products = await Product.find({
       product_name: { $regex: search, $options: "i" },
+      product_brand: { $regex: brand, $options: "i" },
       product_price: priceRange,
     })
       .where("category")
