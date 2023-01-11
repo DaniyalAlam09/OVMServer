@@ -35,3 +35,24 @@ exports.deleteShopOwner = (req, res) => {
     else res.json("User Deleted Successfully");
   });
 };
+exports.blockShopOwner = async (req, res) => {
+  const user = ShopOwner.findOne({ _id: req.params.id });
+  try {
+    await user.updateOne({ $set: { verified: false } });
+    res.status(200).send({ message: "block succesfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+    console.log(error.message);
+  }
+};
+
+exports.unBlockShopOwner = async (req, res) => {
+  const user = ShopOwner.findOne({ _id: req.params.id });
+  try {
+    await user.updateOne({ $set: { verified: true } });
+    res.status(200).send({ message: "unblock succesfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+    console.log(error.message);
+  }
+};
