@@ -1,4 +1,5 @@
 const ShopOwner = require("../models/ShopOwner");
+const Order = require("../models/Order");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("config");
@@ -20,6 +21,7 @@ exports.register = async (req, res, next) => {
       phone,
       catagorey,
       image,
+      delivery,
     } = req.body;
     let shopOwner = await ShopOwner.findOne({ email });
 
@@ -53,6 +55,7 @@ exports.register = async (req, res, next) => {
         phone,
         catagorey,
         image,
+        delivery,
         shopImage: "/public/images/uploaded/shops/Shop1.png",
       });
 
@@ -377,5 +380,20 @@ exports.singleShopProducts = async (req, res, next) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+exports.getMyOrders = async (req, res, next) => {
+  const shopOwnerId = req.user._id;
+  try {
+    let order = await Order.findOne({ shopOwnerId });
+    if (order && order.items.length > 0) {
+      res.json(order);
+    } else {
+      res.send(null);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
   }
 };

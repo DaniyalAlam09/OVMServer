@@ -1,6 +1,8 @@
 const Product = require("../models/Product");
 const ShopOwner = require("../models/ShopOwner");
 const Category = require("../models/Category");
+var Sentiment = require("sentiment");
+var sentiment = new Sentiment();
 
 exports.addProduct = async (req, res, next) => {
   try {
@@ -187,6 +189,33 @@ exports.viewProducts = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.commentProduct = async (req, res, next) => {
+  // let comment = product.reviews[0].comment;
+  // var result = sentiment.analyze(comment);
+  try {
+    const products = await Product.find({});
+    if (!products) {
+      return res.status(400).json({
+        success: false,
+        message: "No Products",
+      });
+    }
+    const reviews = products.reviews[0];
+    console.log(reviews);
+    // const comments = reviews.comment;
+    return res.status(200).json({
+      success: true,
+      reviews,
+      // comments
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error.message,
     });

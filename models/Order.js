@@ -11,6 +11,9 @@ const OrderSchema = mongoose.Schema({
   productName: {
     type: String,
   },
+  productImg: {
+    type: String,
+  },
   items: [
     {
       productId: {
@@ -25,36 +28,24 @@ const OrderSchema = mongoose.Schema({
       price: Number,
     },
   ],
-  // firstName: {
-  //   type: String,
-  //   required: true,
-  // },
-  // lasttName: {
-  //   type: String,
-  //   required: true,
-  // },
-  // phone: {
-  //   type: Number,
-  //   required: true,
-  // },
-  // email: {
-  //   type: String,
-  // },
-  // address: {
-  //   type: String,
-  //   required: true,
-  // },
-  // state: {
-  //   type: String,
-  // },
-  // postalCode: {
-  //   type: String,
-  //   required: true,
-  // },
-  // address: {
-  //   type: String,
-  //   required: true,
-  // },
+  fname: {
+    type: String,
+  },
+  lname: {
+    type: String,
+  },
+  phoneNo: {
+    type: Number,
+  },
+  email: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  postalCode: {
+    type: String,
+  },
   bill: {
     type: Number,
     required: true,

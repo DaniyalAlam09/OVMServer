@@ -8,13 +8,21 @@ module.exports.createOrder = async (req, res) => {
   try {
     const userId = req.user._id;
     let cart = await Cart.findOne({ userId });
+    let { fname, lname, email, phoneNo, address, postalCode } = req.body;
 
     let id = cart.items[0].productId;
     const pro = await Product.findById(id);
     const order = await Order.create({
+      fname,
+      lname,
+      email,
+      phoneNo,
+      address,
+      postalCode,
       userId,
       shopOwnerId: pro.owner,
       productName: pro.product_name,
+      productImg: pro.product_image,
       items: pro,
       bill: cart.bill,
     });
@@ -22,7 +30,9 @@ module.exports.createOrder = async (req, res) => {
     return res.status(201).send(order);
   } catch (err) {
     console.log(err);
-    res.status(500).send("Something went wrong");
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
@@ -31,7 +41,7 @@ module.exports.getOrderProducts = async (req, res) => {
   try {
     let order = await Order.findOne({ userId });
     if (order && order.items.length > 0) {
-      res.send(order);
+      res.json(order);
     } else {
       res.send(null);
     }

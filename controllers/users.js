@@ -157,8 +157,8 @@ exports.myProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res, next) => {
   await User.findByIdAndUpdate(req.user._id, req.body);
-  const newshopowner = await User.findById(req.user._id);
-  return res.send(newshopowner);
+  const newuser = await User.findById(req.user._id);
+  return res.send(newuser);
 };
 
 exports.forgetPassword = async (req, res) => {
@@ -243,5 +243,21 @@ exports.resetPasswordSet = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ status: "Something Went Wrong" });
+  }
+};
+
+exports.getSigleUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User Not Found",
+      });
+    }
+    return res.status(200).send(user);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

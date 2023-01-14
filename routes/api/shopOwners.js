@@ -15,6 +15,7 @@ const {
   forgetPassword,
   resetPassword,
   resetPasswordSet,
+  getMyOrders,
 } = require("../../controllers/ShopOwners");
 const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
@@ -27,6 +28,7 @@ router.post("/reset-password/:id/:token", resetPasswordSet);
 router.post("/login", login);
 router.get("/viewproducts", viewProducts);
 router.get("/shopowner", isAuthenticated, isShopOwner, myProfile);
+router.get("/getshoporder", isAuthenticated, isShopOwner, getMyOrders);
 router.get("/myproducts", isAuthenticated, isShopOwner, getMyProducts);
 router.get("/shopproducts/:id", singleShopProducts);
 router.get("/deleteproduct/:id", isAuthenticated, isShopOwner, deleteProduct);

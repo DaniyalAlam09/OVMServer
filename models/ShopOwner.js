@@ -22,6 +22,7 @@ const shopOwnerSchema = mongoose.Schema({
   floor: { type: Number, required: [true, "Please Enter a floor number"] },
   phone: { type: Number },
   catagorey: String,
+  delivery: String,
   role: { type: String, default: "shopowner" },
   verified: { type: Boolean, default: false },
   products: [
