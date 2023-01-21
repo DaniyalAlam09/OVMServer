@@ -196,23 +196,54 @@ exports.viewProducts = async (req, res) => {
 };
 
 exports.commentProduct = async (req, res, next) => {
-  // let comment = product.reviews[0].comment;
-  // var result = sentiment.analyze(comment);
+  const newproduct = await Product.find({});
   try {
-    const products = await Product.find({});
-    if (!products) {
-      return res.status(400).json({
-        success: false,
-        message: "No Products",
-      });
-    }
-    const reviews = products.reviews[0];
-    console.log(reviews);
-    // const comments = reviews.comment;
+    const pro = [];
+    const reviews = newproduct?.map((p) => {
+      if (typeof p.reviews != "undefined") {
+        p.reviews?.map((c) => {
+          const result = sentiment.analyze(c.comment);
+          console.log(result.score);
+          if (result.score > 2) {
+            pro.push(p);
+          }
+        });
+      }
+    });
+    console.log(pro);
     return res.status(200).json({
       success: true,
-      reviews,
-      // comments
+
+      pro,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.badProducts = async (req, res, next) => {
+  const newproduct = await Product.find({});
+  try {
+    const pro = [];
+    const reviews = newproduct?.map((p) => {
+      if (typeof p.reviews != "undefined") {
+        p.reviews?.map((c) => {
+          const result = sentiment.analyze(c.comment);
+          console.log(result.score);
+          if (result.score < 2) {
+            pro.push(p);
+          }
+        });
+      }
+    });
+    console.log(pro);
+    return res.status(200).json({
+      success: true,
+
+      pro,
     });
   } catch (error) {
     return res.status(500).json({

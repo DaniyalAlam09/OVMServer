@@ -8,6 +8,7 @@ const {
   updateProduct,
   viewProducts,
   commentProduct,
+  badProducts,
 } = require("../../controllers/Products");
 const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
@@ -35,5 +36,6 @@ router.get("/", viewProducts);
 router.put("/updateProduct/:id", updateProduct);
 router.post("/review/:id", isAuthenticated, createReview);
 router.post("/sentiment", commentProduct);
+router.post("/bad", badProducts);
 
 module.exports = router;
