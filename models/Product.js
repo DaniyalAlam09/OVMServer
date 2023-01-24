@@ -12,6 +12,9 @@ const productSchema = mongoose.Schema({
     type: Number,
     required: [true, "Must Enter Product Price"],
   },
+  discounted_price: {
+    type: Number,
+  },
   product_brand: {
     type: String,
   },

@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Subscription = require("../models/Subscription");
+const ContactUS = require("../models/ContactUS");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("config");
@@ -257,6 +259,64 @@ exports.getSigleUser = async (req, res, next) => {
     return res.status(200).send(user);
   } catch (error) {
     res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+exports.subscription = async (req, res, next) => {
+  try {
+    const subscriptionData = {
+      email: req.body.email,
+    };
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        message: "Please Enter Email To Get latest News",
+      });
+    } else {
+      const newsuscription = await Subscription.create(subscriptionData);
+      return res.status(200).json({
+        success: true,
+        subscriptions: newsuscription,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.contactUs = async (req, res, next) => {
+  try {
+    const contactForm = {
+      email: req.body.email,
+      firstName: req.body.firstName,
+      message: req.body.message,
+      subject: req.body.subject,
+      lastName: req.body.lastName,
+    };
+    const { email, firstName, message } = req.body;
+    if ((!email, !firstName, !message)) {
+      return res.status(400).json({
+        message: "Please Fill the Data",
+      });
+    } else if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        message: "Email is not valid",
+      });
+    } else {
+      const newContactForm = await ContactUS.create(contactForm);
+      return res.status(200).json({
+        success: true,
+        contacts: newContactForm,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

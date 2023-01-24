@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const config = require("config");
 const User = require("../models/User");
 const ShopOwner = require("../models/ShopOwner");
+const Subscription = require("../models/Subscription");
+const ContactUS = require("../models/ContactUS");
 
 exports.viewCustomers = async (req, res) => {
   try {
@@ -55,4 +57,21 @@ exports.unBlockShopOwner = async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
     console.log(error.message);
   }
+};
+
+exports.viewSubscription = async (req, res) => {
+  try {
+    Subscription.find((err, doc) => {
+      if (err) return console.log(err);
+      res.json(doc);
+    });
+  } catch (err) {}
+};
+exports.quries = async (req, res) => {
+  try {
+    ContactUS.find((err, doc) => {
+      if (err) return console.log(err);
+      res.json(doc);
+    });
+  } catch (err) {}
 };

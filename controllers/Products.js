@@ -6,7 +6,7 @@ var sentiment = new Sentiment();
 
 exports.addProduct = async (req, res, next) => {
   try {
-    const { price, name, sku, stoke, category } = req.body;
+    const { price, discounted_price, name, sku, stoke, category } = req.body;
 
     if (!req.file) {
       return res.status(400).json({
@@ -38,6 +38,7 @@ exports.addProduct = async (req, res, next) => {
       product_name: req.body.name,
       product_description: req.body.description,
       product_price: req.body.price,
+      discounted_price: req.body.discounted_price,
       product_brand: req.body.brand,
       category: req.body.category,
       product_color: req.body.color,
@@ -232,14 +233,12 @@ exports.badProducts = async (req, res, next) => {
       if (typeof p.reviews != "undefined") {
         p.reviews?.map((c) => {
           const result = sentiment.analyze(c.comment);
-          console.log(result.score);
           if (result.score < 2) {
             pro.push(p);
           }
         });
       }
     });
-    console.log(pro);
     return res.status(200).json({
       success: true,
 
