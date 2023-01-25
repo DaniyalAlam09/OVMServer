@@ -9,25 +9,45 @@ module.exports.createOrder = async (req, res) => {
     const userId = req.user._id;
     let cart = await Cart.findOne({ userId });
     let { fname, lname, email, phoneNo, address, postalCode } = req.body;
+    console.log(cart);
 
-    let id = cart.items[0].productId;
-    const pro = await Product.findById(id);
-    const order = await Order.create({
-      fname,
-      lname,
-      email,
-      phoneNo,
-      address,
-      postalCode,
-      userId,
-      shopOwnerId: pro.owner,
-      productName: pro.product_name,
-      productImg: pro.product_image,
-      items: pro,
-      bill: cart.bill,
+    cart.items.map(async (item) => {
+      const pro = await Product.findById(item.productId);
+      await Order.create({
+        fname,
+        lname,
+        email,
+        phoneNo,
+        address,
+        postalCode,
+        userId,
+        shopOwnerId: pro.owner,
+        productName: pro.product_name,
+        productImg: pro.product_image,
+        items: pro,
+        bill: cart.bill,
+      });
     });
 
-    return res.status(201).send(order);
+    let id = cart.items[0].productId;
+
+    // const pro = await Product.findById(id);
+    // const order = await Order.create({
+    //   fname,
+    //   lname,
+    //   email,
+    //   phoneNo,
+    //   address,
+    //   postalCode,
+    //   userId,
+    //   shopOwnerId: pro.owner,
+    //   productName: pro.product_name,
+    //   productImg: pro.product_image,
+    //   items: pro,
+    //   bill: cart.bill,
+    // });
+
+    return res.status(201).send("ok");
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -39,12 +59,12 @@ module.exports.createOrder = async (req, res) => {
 module.exports.getOrderProducts = async (req, res) => {
   const userId = req.user._id;
   try {
-    let order = await Order.findOne({ userId });
-    if (order && order.items.length > 0) {
-      res.json(order);
-    } else {
-      res.send(null);
+    let order = await Order.find({ userId: userId });
+
+    if (!order) {
+      return res.send("No Order");
     }
+    return res.status(200).json(order);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");

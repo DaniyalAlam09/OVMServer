@@ -386,12 +386,11 @@ exports.singleShopProducts = async (req, res, next) => {
 exports.getMyOrders = async (req, res, next) => {
   const shopOwnerId = req.user._id;
   try {
-    let order = await Order.findOne({ shopOwnerId });
-    if (order && order.items.length > 0) {
-      res.json(order);
-    } else {
-      res.send(null);
+    let order = await Order.find({ shopOwnerId: shopOwnerId });
+    if (!order) {
+      return res.send("No Order");
     }
+    return res.status(200).json(order);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");
