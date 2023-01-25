@@ -195,7 +195,7 @@ exports.forgetPassword = async (req, res) => {
         console.log(error);
       } else {
         console.log("Email sent: " + info.response);
-        res.json({ status: `Email Sent to ${email} for verification` });
+        res.json({ status: `Email Sent to ${email} for Reset Your Password` });
       }
     });
     console.log(link);
