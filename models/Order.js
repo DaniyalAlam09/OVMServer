@@ -11,7 +11,16 @@ const OrderSchema = mongoose.Schema({
   productName: {
     type: String,
   },
+  productId: {
+    type: String,
+  },
   productImg: {
+    type: String,
+  },
+  tracking: {
+    type: String,
+  },
+  status: {
     type: String,
   },
   items: [
@@ -56,7 +65,11 @@ const OrderSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    default: "pending",
+    default: "Pending",
+  },
+  payment: {
+    type: Boolean,
+    default: false,
   },
 });
 

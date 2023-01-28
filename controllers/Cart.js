@@ -126,3 +126,17 @@ module.exports.Checkout = async (req, res) => {
     res.status(500).send("Something went wrong");
   }
 };
+
+module.exports.deleteCart = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    console.log(userId);
+    const cart = await Cart.find({ userId: userId }).remove();
+    return res.status(201).json({
+      message: "Success",
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Something went wrong");
+  }
+};

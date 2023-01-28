@@ -200,21 +200,24 @@ exports.commentProduct = async (req, res, next) => {
   const newproduct = await Product.find({});
   try {
     const pro = [];
+    const badReviewPro = [];
     const reviews = newproduct?.map((p) => {
       if (typeof p.reviews != "undefined") {
         p.reviews?.map((c) => {
           const result = sentiment.analyze(c.comment);
-          console.log(result.score);
           if (result.score > 2) {
             pro.push(p);
+            pro.reverse();
+          } else if (result.score < 0) {
+            badReviewPro.push(p);
+            badReviewPro.reverse();
           }
         });
       }
     });
-    console.log(pro);
     return res.status(200).json({
       success: true,
-
+      badReviewPro,
       pro,
     });
   } catch (error) {
@@ -229,6 +232,7 @@ exports.badProducts = async (req, res, next) => {
   const newproduct = await Product.find({});
   try {
     const pro = [];
+
     const reviews = newproduct?.map((p) => {
       if (typeof p.reviews != "undefined") {
         p.reviews?.map((c) => {

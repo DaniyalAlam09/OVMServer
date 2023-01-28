@@ -37,6 +37,7 @@ exports.deleteShopOwner = (req, res) => {
     else res.json("User Deleted Successfully");
   });
 };
+
 exports.blockShopOwner = async (req, res) => {
   const user = ShopOwner.findOne({ _id: req.params.id });
   try {

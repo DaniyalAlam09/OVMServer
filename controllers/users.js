@@ -83,6 +83,10 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({
         message: "Email is not valid",
       });
+    } else if (phoneNo.length < 10 || phoneNo.length > 10) {
+      return res.status(400).json({
+        message: "Phone No is not valid",
+      });
     } else if (!validator.isStrongPassword(password)) {
       return res.status(400).json({
         message: "password is not strong enough",

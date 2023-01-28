@@ -2,14 +2,13 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Cart = require("../models/Cart");
 const stripe = require("stripe")(
-  "sk_test_51MNbzESG2rFLRrIMPgFYpbyi2tirlvIgwjfzhb3dALWOEjIRIcijdS6mA3A29Mn134GWCqh19IYqfd0CL6z5vaGZ00pgawt77c"
+  "sk_test_51MO12UBGAZ3oqEpyKVSteBr2g3ph1vvysCc3gTkdjJPxnyeuABNzT4dU2WjJ00pp0fcXqNhyokloM2kwiNJ5cAj50001EakTUy"
 );
 module.exports.createOrder = async (req, res) => {
   try {
     const userId = req.user._id;
     let cart = await Cart.findOne({ userId });
     let { fname, lname, email, phoneNo, address, postalCode } = req.body;
-    console.log(cart);
 
     cart.items.map(async (item) => {
       const pro = await Product.findById(item.productId);
@@ -22,6 +21,7 @@ module.exports.createOrder = async (req, res) => {
         postalCode,
         userId,
         shopOwnerId: pro.owner,
+        productId: pro._id,
         productName: pro.product_name,
         productImg: pro.product_image,
         items: pro,
@@ -29,25 +29,7 @@ module.exports.createOrder = async (req, res) => {
       });
     });
 
-    let id = cart.items[0].productId;
-
-    // const pro = await Product.findById(id);
-    // const order = await Order.create({
-    //   fname,
-    //   lname,
-    //   email,
-    //   phoneNo,
-    //   address,
-    //   postalCode,
-    //   userId,
-    //   shopOwnerId: pro.owner,
-    //   productName: pro.product_name,
-    //   productImg: pro.product_image,
-    //   items: pro,
-    //   bill: cart.bill,
-    // });
-
-    return res.status(201).send("ok");
+    return res.status(201).send("Success");
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -64,7 +46,7 @@ module.exports.getOrderProducts = async (req, res) => {
     if (!order) {
       return res.send("No Order");
     }
-    return res.status(200).json(order);
+    return res.status(200).json(order.reverse());
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");
@@ -78,18 +60,20 @@ module.exports.createPayment = async (req, res) => {
     if (cart && cart.items.length > 0) {
       // res.send(cart);
       const total = cart.bill;
+      var newPayment = {
+        amount: req.body.bill,
+      };
       console.log("Payment Request recieved for this ruppess", total);
+      await Order.findByIdAndUpdate(req.body._id, { payment: true });
 
       const payment = await stripe.paymentIntents.create({
         amount: total * 100,
-        currency: "pkr",
+        currency: "usd",
       });
 
       return res.status(201).send({
         clientSecret: payment.client_secret,
       });
-    } else {
-      res.send(null);
     }
   } catch (err) {
     console.log(err);

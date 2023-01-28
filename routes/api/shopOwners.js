@@ -16,6 +16,7 @@ const {
   resetPassword,
   resetPasswordSet,
   getMyOrders,
+  updateOrder,
 } = require("../../controllers/ShopOwners");
 const { isAuthenticated } = require("../../middlewares/auth");
 const { isShopOwner } = require("../../middlewares/isShopOwner");
@@ -35,5 +36,6 @@ router.get("/deleteproduct/:id", isAuthenticated, isShopOwner, deleteProduct);
 
 router.get("/:id", getSigleShopOwner);
 router.put("/updateprofile/:id", isAuthenticated, isShopOwner, updateProfile);
+router.put("/update/:id", updateOrder);
 
 module.exports = router;

@@ -33,6 +33,10 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({
         message: "Mandatory Feilds must be filled",
       });
+    } else if (phone.length < 10 || phone.length > 10) {
+      return res.status(400).json({
+        message: "Phone No is not valid",
+      });
     } else if (!validator.isEmail(email)) {
       return res.status(400).json({
         message: "Email is not valid",
@@ -390,7 +394,21 @@ exports.getMyOrders = async (req, res, next) => {
     if (!order) {
       return res.send("No Order");
     }
-    return res.status(200).json(order);
+    return res.status(200).json(order.reverse());
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
+  }
+};
+
+module.exports.updateOrder = async (req, res) => {
+  try {
+    console.log(req.body);
+    let order = await Order.findById(req.params.id);
+    order.status = req.body.status;
+    order.tracking = req.body.tracking;
+    await order.save();
+    res.status(200).send({ order, message: "Updated" });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");
