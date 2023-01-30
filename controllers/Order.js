@@ -80,3 +80,17 @@ module.exports.createPayment = async (req, res) => {
     res.status(500).send("Something went wrong");
   }
 };
+
+exports.getAllOrders = async (req, res) => {
+  try {
+    Order.find((err, doc) => {
+      if (err) return console.log(err);
+      res.json(doc);
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

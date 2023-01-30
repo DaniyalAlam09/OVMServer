@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   try {
-    let { email, password, firstName, lastName, address, phoneNo, profession } =
+    let { email, password, firstName, lastName, address, phoneNo, city } =
       req.body;
     let user = await User.findOne({ email });
 
@@ -101,7 +101,7 @@ exports.register = async (req, res, next) => {
         lastName,
         address,
         phoneNo,
-        profession,
+        city,
       });
       // user will automatacally login after registration
 

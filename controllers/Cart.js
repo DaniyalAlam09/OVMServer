@@ -35,6 +35,9 @@ module.exports.addToCart = async (req, res) => {
 
     const price = item.product_price;
     const name = item.product_name;
+    const description = item.product_description;
+    const image = item.product_image;
+    const owner = item.owner;
 
     if (cart) {
       // if cart exists for the user
@@ -46,7 +49,15 @@ module.exports.addToCart = async (req, res) => {
         productItem.quantity += quantity;
         cart.items[itemIndex] = productItem;
       } else {
-        cart.items.push({ productId, name, quantity, price });
+        cart.items.push({
+          productId,
+          name,
+          owner,
+          description,
+          image,
+          quantity,
+          price,
+        });
       }
       cart.bill += quantity * price;
       cart = await cart.save();
@@ -56,9 +67,12 @@ module.exports.addToCart = async (req, res) => {
       const pr = quantity * price;
       const newCart = await Cart.create({
         userId,
-        items: [{ productId, name, quantity, price }],
+        items: [
+          { productId, name, owner, description, image, quantity, price },
+        ],
         bill: pr,
       });
+      console.log(newCart);
       return res.status(201).send(newCart);
     }
   } catch (err) {

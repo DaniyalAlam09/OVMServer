@@ -24,12 +24,12 @@ const userSchema = mongoose.Schema({
     type: Number,
     required: [true, "Please Enter a Phone No"],
   },
-  profession: {
+  city: {
     type: String,
   },
 
   role: { type: String, default: "user" },
-  
+
   myOrders: [
     {
       type: mongoose.Schema.Types.ObjectId,

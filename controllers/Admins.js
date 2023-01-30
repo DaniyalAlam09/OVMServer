@@ -68,6 +68,7 @@ exports.viewSubscription = async (req, res) => {
     });
   } catch (err) {}
 };
+
 exports.quries = async (req, res) => {
   try {
     ContactUS.find((err, doc) => {
