@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const ShopOwner = require("../models/ShopOwner");
 const Category = require("../models/Category");
+const Order = require("../models/Order");
 var Sentiment = require("sentiment");
 var sentiment = new Sentiment();
 
@@ -79,7 +80,10 @@ exports.getSigleProduct = async (req, res, next) => {
 };
 
 exports.createReview = async (req, res, next) => {
+  const userId = req.user._id;
   try {
+    let order = await Order.find({ userId: userId });
+
     let alreadyReviewed = false;
     let owner = false;
     const { rating, comment } = req.body;
@@ -88,6 +92,7 @@ exports.createReview = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Comment and Rating is Required" });
     }
+
     const product = await Product.findById(req.params.id);
 
     if (!product) {
@@ -110,23 +115,29 @@ exports.createReview = async (req, res, next) => {
     if (alreadyReviewed) {
       return res.json({ success: false, message: "Already Reviewed" });
     }
-    const review = {
-      name: req.user.firstName + " " + req.user.lastName,
-      rating: Number(rating),
-      comment,
-      user: req.user._id,
-    };
+    for (let i = 0; i < order?.length; i++) {
+      if (product._id.toString() === order[i].productId?.toString()) {
+        const review = {
+          name: req.user.firstName + " " + req.user.lastName,
+          rating: Number(rating),
+          comment,
+          user: req.user._id,
+        };
 
-    product.reviews.push(review);
-    product.numReviews = product.reviews.length;
-    product.rating =
-      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      product.reviews.length;
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating =
+          product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+          product.reviews.length;
 
-    await product.save();
-    res.status(201).json({ success: true, message: "Review added" });
+        await product.save();
+        res.status(200).json({ success: true, message: "Review added" });
+      }
+    }
+    res.json({ success: true, message: "First Buy this Product" });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.log(error);
+    // res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -140,7 +151,7 @@ exports.updateProduct = async (req, res, next) => {
 exports.viewProducts = async (req, res) => {
   try {
     const page = Number(req.query.page) - 1 || 0;
-    const limit = Number(req.query.limit) || 10;
+    // const limit = Number(req.query.limit) || 10;
     const search = req.query.search || "";
     const brand = req.query.brand || "";
     let sort = req.query.sort || "price";
@@ -170,16 +181,16 @@ exports.viewProducts = async (req, res) => {
       );
     }
     const products = await Product.find({
-      product_name: { $regex: search, $options: "i" },
+      // product_name: { $regex: search, $options: "i" },
       product_brand: { $regex: brand, $options: "i" },
       product_price: priceRange,
     })
       .where("category")
       .in([...categories])
-      .sort(sortBy)
-      .skip(page * limit)
-      .limit(limit)
-      .populate("owner");
+      .sort(sortBy);
+    // .skip(page * limit)
+    // .limit(limit);
+    // .populate("owner");
     const productCount = await Product.count();
     // console.log(productCount);
 
