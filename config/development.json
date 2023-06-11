@@ -1,7 +1,7 @@
 {
   "jwtPrivateKey": "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe",
   "StripeAPIKey": "wirfiororhowiuioweu9879h489hceiuo",
-  "mongooseURL": "mongodb://localhost:27017/OVM",
+  "mongooseURL": "mongodb+srv://dannyalalam:sRob7w5bmBSf1Tfa@cluster0.iiordeo.mongodb.net/?retryWrites=true&w=majority",
   "port": "4000",
   "BASE_URL": "http://localhost:3000/",
   "HOST": "smtp.gmail.com",
