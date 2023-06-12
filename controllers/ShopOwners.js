@@ -194,7 +194,7 @@ exports.forgetPassword = async (req, res) => {
       expiresIn: "5m",
     });
 
-    const link = `http://localhost:4000/shopowners/reset-password/${oldUser._id}/${token}`;
+    const link = `https://red-gorgeous-bandicoot.cyclic.app/shopowners/reset-password/${oldUser._id}/${token}`;
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

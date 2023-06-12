@@ -3,7 +3,7 @@
   "StripeAPIKey": "wirfiororhowiuioweu9879h489hceiuo",
   "mongooseURL": "mongodb+srv://dannyalalam:sRob7w5bmBSf1Tfa@cluster0.iiordeo.mongodb.net/?retryWrites=true&w=majority",
   "port": "4000",
-  "BASE_URL": "http://localhost:3000/",
+  "BASE_URL": "https://red-gorgeous-bandicoot.cyclic.app/",
   "HOST": "smtp.gmail.com",
   "SERVICE": "gmail",
   "EMAIL_PORT": "587",
@@ -11,3 +11,6 @@
   "USER": "onlinevirtualmall09@gmail.com",
   "PASS": "wlgkftaccqrmplxr"
 }
+
+
+
