@@ -14,7 +14,8 @@ exports.addProduct = async (req, res, next) => {
         success: false,
         message: "Select Product Picture",
       });
-    } else if (!name) {
+    } else
+     if (!name) {
       return res.status(400).json({
         message: "Please Enter Product Name",
       });
